@@ -154,7 +154,7 @@ namespace Encryption__Strategy_.IEncryption
                 changedKeyX = SortKey(keyX);
             }
             while (!IsValidKey(changedKeyX));
-            
+
             do
             {
                 keyY = random.Rand(y).ToLower();

@@ -9,8 +9,8 @@ namespace Encryption__Strategy_.IEncryption
     internal class PairCipher : IEncryption<string>
     {
         private char[] alphabet1;
-
         private char[] alphabet2;
+        private static int size = 26;
 
         private void FillArrays()
         {
@@ -40,8 +40,8 @@ namespace Encryption__Strategy_.IEncryption
 
         public PairCipher()
         {
-            alphabet1 = new char[26];
-            alphabet2 = new char[26];
+            alphabet1 = new char[size];
+            alphabet2 = new char[size];
             
             this.FillArrays();
         }

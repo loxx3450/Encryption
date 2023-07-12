@@ -12,6 +12,7 @@ namespace Encryption__Strategy_.IEncryption
         private char[,] array2;
         private char[,] array3;
         private char[,] array4;
+        private static int size = 5;
 
         private void FillArrays()
         {
@@ -58,10 +59,10 @@ namespace Encryption__Strategy_.IEncryption
 
         public FourSquaresCipher()
         {
-            array1 = new char[5, 5];
-            array2 = new char[5, 5];
-            array3 = new char[5, 5]; 
-            array4 = new char[5, 5];
+            array1 = new char[size, size];
+            array2 = new char[size, size];
+            array3 = new char[size, size]; 
+            array4 = new char[size, size];
 
             this.FillArrays();
         }
@@ -76,7 +77,7 @@ namespace Encryption__Strategy_.IEncryption
 
             bool firstUpper = false, secondUpper = false;
 
-            for (int i = 0; i < input.Length - 1; ++i)
+            for (int i = 0; i < input.Length; ++i)
             {
                 if ((input[i] >= 'A' && input[i] <= 'Z') || (input[i] >= 'a' && input[i] <= 'z'))
                 {
@@ -120,11 +121,6 @@ namespace Encryption__Strategy_.IEncryption
                 {
                     result += input[i];
                 }
-            }
-
-            if (input.Length % 2 == 0)
-            {
-                result += input[input.Length - 1];
             }
 
             return result;
