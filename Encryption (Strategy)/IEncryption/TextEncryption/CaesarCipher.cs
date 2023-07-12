@@ -8,7 +8,7 @@ namespace Encryption__Strategy_.IEncryption
 {
     internal class CaesarСipher : IEncryption<string>
     {
-        private int shift;
+        private readonly int shift;
 
         public CaesarСipher()
         {
@@ -22,11 +22,11 @@ namespace Encryption__Strategy_.IEncryption
 
             foreach (char c in input)
             {
-                if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+                if (IsLetter(c))
                 {
                     symbol = Convert.ToChar(Convert.ToInt32(c) + shift);
 
-                    if ((c <= 'Z' && symbol > 'Z') || (c >= 'a' && symbol > 'z'))
+                    if ((IsUpper(c) && !IsUpper(symbol)) || (!IsUpper(c) && !IsLetter(symbol)))
                     {
                         symbol = Convert.ToChar(Convert.ToInt32(symbol) - 26);
                     }
@@ -40,6 +40,16 @@ namespace Encryption__Strategy_.IEncryption
             }
 
             return result;
+
+            bool IsUpper(char c)
+            {
+                return c >= 'A' && c <= 'Z';
+            }
+
+            bool IsLetter(char c)
+            {
+                return IsUpper(c) || (c >= 'a' && c <= 'z');
+            }
         }
 
         public string Decrypt(string input)

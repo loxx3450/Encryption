@@ -1,6 +1,3 @@
 .vs/
 x64/
-sqlite/
-Debug/
-Kozachok.txt*
-MyDb.db*
+obj/

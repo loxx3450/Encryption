@@ -8,17 +8,15 @@ namespace Encryption__Strategy_.IEncryption
 {
     internal class FourSquaresCipher : IEncryption<string>
     {
-        private char[,] array1;
-        private char[,] array2;
-        private char[,] array3;
-        private char[,] array4;
-        private static int size = 5;
+        private readonly char[,] array1;
+        private readonly char[,] array2;
+        private readonly char[,] array3;
+        private readonly char[,] array4;
+        private static readonly int size = 5;
 
         private void FillArrays()
         {
-            Random random = new Random();
-
-            int x = 0, y = 0;
+            Random random = new();
 
             for (int i = 97; i <= 122; ++i)
             {
@@ -32,6 +30,8 @@ namespace Encryption__Strategy_.IEncryption
 
             void FillElement(char[,] array, int i)
             {
+                int x, y;
+
                 do
                 {
                     x = random.Next(array.GetLength(0));
@@ -42,20 +42,6 @@ namespace Encryption__Strategy_.IEncryption
                 array[x, y] = Convert.ToChar(i);
             }
         }
-
-        struct Point
-        {
-            public Point(int x = -1, int y = -1)
-            {
-                this.X = x;
-                this.Y = y;
-            }
-
-            public int X { get; set; }
-
-            public int Y { get; set; }
-        }
-
 
         public FourSquaresCipher()
         {
@@ -79,14 +65,15 @@ namespace Encryption__Strategy_.IEncryption
 
             for (int i = 0; i < input.Length; ++i)
             {
-                if ((input[i] >= 'A' && input[i] <= 'Z') || (input[i] >= 'a' && input[i] <= 'z'))
+                if (IsLetter(input[i]))
                 {
-                    if (input[i] >= 'A' && input[i] <= 'Z') { firstUpper = true; }
+                    if (IsUpper(input[i])) { firstUpper = true; }
                     x = FindValInArr(input[i++], array1);
 
                     index = i;
 
-                    while (!((input[index] >= 'A' && input[index] <= 'Z') || (input[index] >= 'a' && input[index] <= 'z'))) { 
+                    while (!IsLetter(input[index])) 
+                    { 
                         if (++index == input.Length) 
                         {
                             for (int j = i - 1; j < index; ++j) { result += input[j]; }
@@ -95,12 +82,12 @@ namespace Encryption__Strategy_.IEncryption
                         } 
                     }
 
-                    if (input[index] >= 'A' && input[index] <= 'Z') { secondUpper = true; }
+                    if (IsUpper(input[index])) { secondUpper = true; }
                     y = FindValInArr(input[index], array4);
 
                     if (firstUpper) 
                     { 
-                        result += Convert.ToChar(Convert.ToInt32(array3[y.X, x.Y] - 32)); 
+                        result += Upper(array3[y.X, x.Y]); 
                     }
                     else { result += array3[y.X, x.Y]; }
 
@@ -108,7 +95,7 @@ namespace Encryption__Strategy_.IEncryption
 
                     if (secondUpper) 
                     { 
-                        result += Convert.ToChar(Convert.ToInt32(array2[x.X, y.Y] - 32)); 
+                        result += Upper(array2[x.X, y.Y]); 
                     }
                     else { result += array2[x.X, y.Y]; }
 
@@ -125,11 +112,11 @@ namespace Encryption__Strategy_.IEncryption
 
             return result;
 
-            Point FindValInArr(char value, char[,] array)
+            static Point FindValInArr(char value, char[,] array)
             {
-                for (int i = 0; i < array.GetLength(0); ++i)
+                for (int i = 0; i < size; ++i)
                 {
-                    for (int j = 0; j < array.GetLength(0); ++j)
+                    for (int j = 0; j < size; ++j)
                     {
                         if (array[i, j] == value || array[i, j] == Convert.ToChar(Convert.ToInt32(value) + 32))
                         {
@@ -139,6 +126,21 @@ namespace Encryption__Strategy_.IEncryption
                 }
 
                 return new Point();
+            }
+
+            bool IsUpper(char c)
+            {
+                return c >= 'A' && c <= 'Z';
+            }
+
+            bool IsLetter(char c)
+            {
+                return IsUpper(c) || (c >= 'a' && c <= 'z');
+            }
+
+            char Upper(char c)
+            {
+                return Convert.ToChar(Convert.ToInt32(c - 32));
             }
         }
 
@@ -154,13 +156,13 @@ namespace Encryption__Strategy_.IEncryption
 
             return result;
 
-            void Swap(char[,] firstArray, char[,] secondArray)
+            static void Swap(char[,] firstArray, char[,] secondArray)
             {
                 char temp;
 
-                for (int i = 0; i < firstArray.GetLength(0); ++i)
+                for (int i = 0; i < size; ++i)
                 {
-                    for (int j = 0; j < firstArray.GetLength(0); ++j)
+                    for (int j = 0; j < size; ++j)
                     {
                         temp = firstArray[i, j]; 
                         firstArray[i, j] = secondArray[i, j];

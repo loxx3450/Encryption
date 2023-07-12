@@ -10,19 +10,19 @@ namespace Encryption__Strategy_.IEncryption
 
     internal class ADFGXCipher : IEncryption<string>
     {
-        private char[,] matrix;
-        private static int size = 5;
+        private readonly char[,] matrix;
+        private static readonly int size = 5;
         private string key;
         private string sortedKey;
-        private static int keyLength = 7;
-        private Dictionary<int, char> keys;
-        private Dictionary<char, int> indexes;
+        private static readonly int keyLength = 7;
+        private readonly Dictionary<int, char> keys;
+        private readonly Dictionary<char, int> indexes;
 
         private void FillMatrix()
         {
-            Random random = new Random();
+            Random random = new();
 
-            int x = 0, y = 0;
+            int x, y;
 
             for(int i = 97; i <= 122; ++i)
             {
@@ -30,8 +30,8 @@ namespace Encryption__Strategy_.IEncryption
 
                 do
                 {
-                    x = random.Next(matrix.GetLength(0));
-                    y = random.Next(matrix.GetLength(0));
+                    x = random.Next(size);
+                    y = random.Next(size);
                 }
                 while (matrix[x, y] != '\0');
 
@@ -41,7 +41,7 @@ namespace Encryption__Strategy_.IEncryption
 
         private void GenerateKey()
         {
-            Rand.RandStr randStr = new RandStr();
+            RandStr randStr = new();
 
             do
             {
@@ -67,7 +67,7 @@ namespace Encryption__Strategy_.IEncryption
             {
                 string result = string.Empty;
 
-                List<char> list = new List<char>();
+                List<char> list = new();
 
                 foreach (char c in key) { list.Add(c); }
 
@@ -77,19 +77,6 @@ namespace Encryption__Strategy_.IEncryption
 
                 return result;
             }
-        }
-
-        struct Point
-        {
-            public Point(int x = -1, int y = -1)
-            {
-                this.X = x;
-                this.Y = y;
-            }
-
-            public int X { get; set; }
-
-            public int Y { get; set; }
         }
 
         public ADFGXCipher()
@@ -217,7 +204,7 @@ namespace Encryption__Strategy_.IEncryption
 
             string cipher = GetCipher();
 
-            int indexI = 0, indexJ = 0;
+            int indexI, indexJ;
 
             for (int index = 0; index < cipher.Length; index += 2)
             {

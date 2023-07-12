@@ -8,17 +8,14 @@ namespace Encryption__Strategy_.IEncryption
 {
     public class FileCipher : IEncryption<FileInfo>
     {
-        private string key;
-        private VigenereCipher method;
-        private FileInfo output;
+        private readonly VigenereCipher method;
+        private readonly FileInfo output;
 
         public FileCipher(string key, string outputPath)
         {
-            this.key = key;
+            this.method = new VigenereCipher(key.ToLower());
 
-            method = new VigenereCipher(key.ToLower());
-
-            output = new FileInfo(outputPath);
+            this.output = new FileInfo(outputPath);
         }
 
         public FileInfo Encrypt(FileInfo input)

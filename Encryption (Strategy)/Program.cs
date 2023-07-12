@@ -4,8 +4,8 @@ using Encryption__Strategy_.Encryptor.TextEncryptor;
 using Encryption__Strategy_.Encryptor.FileEncryptor;
 
 // -------- 1 -----------
-FileEncryptor a = new("KEYAKA", "./Output.TXT"); 
-a.Decrypt(new FileInfo("./Input.TXT"));
+FileEncryptor a = new("KYAKA", "./Output.TXT"); 
+a.Encrypt(new FileInfo("./Input.TXT"));
 
 
 // -------- 2 -----------

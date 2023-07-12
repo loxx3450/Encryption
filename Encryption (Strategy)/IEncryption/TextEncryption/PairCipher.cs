@@ -8,15 +8,15 @@ namespace Encryption__Strategy_.IEncryption
 {
     internal class PairCipher : IEncryption<string>
     {
-        private char[] alphabet1;
-        private char[] alphabet2;
-        private static int size = 26;
+        private readonly char[] alphabet1;
+        private readonly char[] alphabet2;
+        private static readonly int size = 26;
 
         private void FillArrays()
         {
-            Random random = new Random();
+            Random random = new();
 
-            int index = 0;
+            int index;
 
             for (int i = 97; i <= 122; ++i)
             {
@@ -48,24 +48,24 @@ namespace Encryption__Strategy_.IEncryption
 
         public string Encrypt(string input)
         {
-            string result = String.Empty;
+            string result = string.Empty;
             char symbol;
 
             foreach (char c in input)
             {
-                if (c >= 'A' && c <= 'Z')
+                if (IsUpper(c))
                 {
                     symbol = Convert.ToChar(Convert.ToInt32(c) + 32);
                 }
                 else { symbol = c; }
 
-                if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+                if (IsLetter(c))
                 { 
                     for (int i = 0; i < alphabet1.Length; ++i)
                     {
                         if (symbol == alphabet1[i])
                         {
-                            if (c >= 'A' && c <= 'Z')
+                            if (IsUpper(c))
                             {
                                 symbol = Convert.ToChar(Convert.ToInt32(alphabet2[i]) - 32);
                             }
@@ -80,6 +80,16 @@ namespace Encryption__Strategy_.IEncryption
             }
 
             return result;
+
+            bool IsUpper(char c)
+            {
+                return c >= 'A' && c <= 'Z';
+            }
+
+            bool IsLetter(char c)
+            {
+                return IsUpper(c) || (c >= 'a' && c <= 'z');
+            }
         }
 
         public string Decrypt(string input)
